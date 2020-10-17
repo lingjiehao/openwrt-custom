@@ -21,16 +21,12 @@ jobs:
         - /r2s:/r2s
 
     steps:
-      - name: Run Docker
-        run: |
-          docker run -d -v /r2s:/r2s --name build-r2s lingjiehao/build-envs:r2s
-      
       - name: apt
         run: |
           apt-get -y upgrate
           apt-get -y upgrade
-          echo "echo 123" > /test.sh
-          sh /test.sh
+          echo "echo 123" > /r2s/test.sh
+          sh /r2s/test.sh
       
 #       - name: Sync and Build
 #         run: |
@@ -44,7 +40,7 @@ jobs:
         with:
           name: Openwrt
           path: |
-            /test.sh
+            /r2s/test.sh
 #            /r2s/bin/targets/rockchip/armv8/*-sysupgrade.img.gz
           
         
