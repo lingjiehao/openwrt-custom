@@ -9,11 +9,12 @@ on:
 #       - r2s
   #schedule:
   #  - cron: '0 19 * * 6'
-#   watch:
-#     types: started
+  watch:
+    types: started
 
 jobs:
   build:
+    if: github.event.repository.owner.id == github.event.sender.id
     runs-on: ubuntu-latest
     container:
       image: lingjiehao/build-envs:r2s
@@ -21,27 +22,26 @@ jobs:
         - /r2s:/r2s
 
     steps:
-      - name: apt
-        run: |
-          apt-get -y update
-          apt-get -y upgrade
-          echo "echo 123" > /r2s/test.sh
-          sh /r2s/test.sh
       
-#       - name: Sync and Build
-#         run: |
-#             cd /r2s
-#             repo init -u https://github.com/lingjiehao/manifests -b r2s
-#             repo sync --no-tags -cd -j8
-#             ./build.sh
+      - name: Sync and Build
+        run: |
+            cd /r2s
+            repo init -u https://github.com/lingjiehao/manifests -b r2s
+            repo sync --no-tags -cd -j8
+            ./build.sh |& tee build.log
   
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
           name: Openwrt
           path: |
-            /r2s/test.sh
-#            /r2s/bin/targets/rockchip/armv8/*-sysupgrade.img.gz
-          
+            /r2s/bin/targets/rockchip/armv8/*-sysupgrade.img.gz
+  
+      - name: Upload Fail Log
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: log
+          path: /r2s/build.log
         
           
