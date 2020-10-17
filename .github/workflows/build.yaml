@@ -15,37 +15,29 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: lingjiehao/build-envs:r2s
-      volumes: 
-        - /r2s:/r2s
+#     container:
+#       image: lingjiehao/build-envs:r2s
+#       volumes: 
+#         - /r2s:/r2s
 
     steps:
-      - name: Sync
+      - name: Run Docker
         run: |
-          cd /r2s \
-          && repo init -u https://github.com/lingjiehao/manifests -b r2s \
-          && repo sync --no-tags -cd -j8
+          docker run -d -v /r2s:/r2s --name build-r2s lingjiehao/build-envs:r2s
       
-      - name: Build
+      - name: Sync and Build
         run: |
-          cd /r2s \
-          && ./build.sh
+          docker exec -it build-r2s bash
+          cd /r2s
+          repo init -u https://github.com/lingjiehao/manifests -b r2s
+          repo sync --no-tags -cd -j8
+          ./build.sh
   
-  upload:
-    needs: [build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Zip
-        run: |
-          mkdir ./artifact \
-          && cp /r2s/bin/targets/rockchip/armv8/*squashfs-sysupgrade.img.gz ./artifact/
-          && zip -r artifact.zip ./artifact
       - name: Upload Artifact
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@v2
         with:
-          name: Test
-          path: ./artifact.zip
+          name: Openwrt
+          path: /r2s/bin/targets/rockchip/armv8/*-sysupgrade.img.gz
           
         
           
