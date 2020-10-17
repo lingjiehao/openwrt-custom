@@ -16,14 +16,11 @@ jobs:
     runs-on: ubuntu-latest
     container: lingjiehao/build-envs:r2s
     steps:
-      - name: Sync Source Code
+      - name: Sync and Build
         run: |
           mkdir r2s && cd r2s && \
           git config --global user.email "action@github.com" && git config --global user.name "GitHub Action" && \
           repo init -u https://github.com/lingjiehao/manifests -b r2s && \
-          repo sync --no-tags -cd -j8
-      
-      - name: Build
-        run: |
+          repo sync --no-tags -cd -j8 && \
           ./build.sh
           
