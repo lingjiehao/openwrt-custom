@@ -23,7 +23,7 @@ jobs:
     steps:
       - name: apt
         run: |
-          apt-get -y upgrate
+          apt-get -y update
           apt-get -y upgrade
           echo "echo 123" > /r2s/test.sh
           sh /r2s/test.sh
