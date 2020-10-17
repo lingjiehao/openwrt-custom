@@ -18,7 +18,7 @@ jobs:
       image: lingjiehao/build-envs:r2s
       volumes: 
         - /r2s:/r2s
-      options: /r2s
+      options: --workdir /r2s
 
     steps:
       - name: Sync
