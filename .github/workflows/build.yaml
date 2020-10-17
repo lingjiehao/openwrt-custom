@@ -37,14 +37,14 @@ jobs:
     steps:
       - name: Zip
         run: |
-          mkdir /artifact \
-          && cp /r2s/bin/targets/rockchip/armv8/*squashfs-sysupgrade.img.gz /artifact/
-          && zip -r artifact.zip /artifact
+          mkdir ./artifact \
+          && cp /r2s/bin/targets/rockchip/armv8/*squashfs-sysupgrade.img.gz ./artifact/
+          && zip -r artifact.zip ./artifact
       - name: Upload Artifact
         uses: actions/upload-artifact@master
         with:
-          name: ${{ steps.assemble_artifact.outputs.release_tag }}-ROM
-          path: /artifact.zip
+          name: Test
+          path: ./artifact.zip
           
         
           
