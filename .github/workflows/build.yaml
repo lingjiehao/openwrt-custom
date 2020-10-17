@@ -1,0 +1,29 @@
+name: Nanopi R2S Openwrt Build
+
+on:
+  push:
+    paths-ignore:
+      - '.github/**'
+    branches:
+      - r2s
+  #schedule:
+  #  - cron: '0 19 * * 6'
+  watch:
+    types: started
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: lingjiehao/build-envs:r2s
+    steps:
+      - name: Sync Source Code
+        run: |
+          mkdir r2s && cd r2s && \
+          git config --global user.email "action@github.com" && git config --global user.name "GitHub Action" && \
+          repo init -u https://github.com/lingjiehao/manifests -b r2s && \
+          repo sync --no-tags -cd -j8
+      
+      - name: Build
+        run: |
+          ./build.sh
+          
