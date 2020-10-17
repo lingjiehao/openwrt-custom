@@ -1,15 +1,16 @@
 name: Nanopi R2S Openwrt Build
 
 on:
-  push:
-    paths-ignore:
-      - '.github/**'
-    branches:
-      - r2s
+  workflow_dispatch:
+#   push:
+#     paths-ignore:
+#       - '.github/**'
+#     branches:
+#       - r2s
   #schedule:
   #  - cron: '0 19 * * 6'
-  watch:
-    types: started
+#   watch:
+#     types: started
 
 jobs:
   build:
