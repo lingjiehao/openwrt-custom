@@ -14,11 +14,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: lingjiehao/build-envs:r2s
+    container:
+      image: lingjiehao/build-envs:r2s
+      volumes: 
+        - /r2s:/r2s
     steps:
       - name: Sync and Build
         run: |
-          mkdir r2s && cd r2s && \
+          cd /r2s && \
           git config --global user.email "action@github.com" && git config --global user.name "GitHub Action" && \
           repo init -u https://github.com/lingjiehao/manifests -b r2s && \
           repo sync --no-tags -cd -j8 && \
