@@ -15,30 +15,37 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-#     container:
-#       image: lingjiehao/build-envs:r2s
-#       volumes: 
-#         - /r2s:/r2s
+    container:
+      image: lingjiehao/build-envs:r2s
+      volumes: 
+        - /r2s:/r2s
 
     steps:
       - name: Run Docker
         run: |
           docker run -d -v /r2s:/r2s --name build-r2s lingjiehao/build-envs:r2s
       
-      - name: Sync and Build
+      - name: apt
         run: |
-          docker exec -d build-r2s bash -c "\ 
-            cd /r2s;\
-            repo init -u https://github.com/lingjiehao/manifests -b r2s;\
-            repo sync --no-tags -cd -j8;\
-            ./build.sh"
-          docker logs -f build-r2s
+          apt-get -y upgrate
+          apt-get -y upgrade
+          echo "echo 123" > /test.sh
+          sh /test.sh
+      
+#       - name: Sync and Build
+#         run: |
+#             cd /r2s
+#             repo init -u https://github.com/lingjiehao/manifests -b r2s
+#             repo sync --no-tags -cd -j8
+#             ./build.sh
   
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
           name: Openwrt
-          path: /r2s/bin/targets/rockchip/armv8/*-sysupgrade.img.gz
+          path: |
+            /test.sh
+#            /r2s/bin/targets/rockchip/armv8/*-sysupgrade.img.gz
           
         
           
