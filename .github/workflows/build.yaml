@@ -27,8 +27,8 @@ jobs:
         run: |
             cd /r2s
             repo init -u https://github.com/lingjiehao/manifests -b r2s
-            repo sync --no-tags -cd -j8
-            ./build.sh 2&>1 tee build.log
+            repo sync --no-tags -cd -j8 2&>1 | tee -a build.log
+            ./build.sh 2&>1 | tee -a build.log
   
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
