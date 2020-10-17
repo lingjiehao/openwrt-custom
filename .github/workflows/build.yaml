@@ -27,11 +27,12 @@ jobs:
       
       - name: Sync and Build
         run: |
-          docker exec -it build-r2s bash
-          cd /r2s
-          repo init -u https://github.com/lingjiehao/manifests -b r2s
-          repo sync --no-tags -cd -j8
-          ./build.sh
+          docker exec -d build-r2s bash -c "\ 
+            cd /r2s;\
+            repo init -u https://github.com/lingjiehao/manifests -b r2s;\
+            repo sync --no-tags -cd -j8;\
+            ./build.sh"
+          docker logs -f build-r2s
   
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
