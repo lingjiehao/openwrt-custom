@@ -16,19 +16,21 @@ jobs:
   build:
     if: github.event.repository.owner.id == github.event.sender.id
     runs-on: ubuntu-latest
-    container:
-      image: lingjiehao/build-envs:r2s
-      volumes: 
-        - /r2s:/r2s
-
+#     container:
+#       image: lingjiehao/build-envs:r2s
+#       volumes: 
+#         - /r2s:/r2s
     steps:
-      
+      - name: Run Docker
+        run: |
+          docker run -d -v /r2s:/r2s --name r2s-build lingjiehao/build-envs:r2s 
       - name: Sync and Build
         run: |
-            cd /r2s
-            repo init -u https://github.com/lingjiehao/manifests -b r2s
-            repo sync --no-tags -cd -j8 2>&1 | tee -a build.log
-            ./build.sh 2>&1 | tee -a build.log
+          docker exec r2s-build bash -c "\
+            cd /r2s && \
+            repo init -u https://github.com/lingjiehao/manifests -b r2s && \
+            repo sync --no-tags -cd -j8 && \            
+            ./build.sh 2>&1 | tee -a build.log "
   
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
@@ -37,11 +39,11 @@ jobs:
           path: |
             /r2s/bin/targets/rockchip/armv8/*-sysupgrade.img.gz
   
-      - name: Upload Fail Log
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: log
-          path: /r2s/build.log
+#       - name: Upload Fail Log
+#         if: ${{ failure() }}
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: log
+#           path: /r2s/build.log
         
           
