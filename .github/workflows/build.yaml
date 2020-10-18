@@ -23,14 +23,13 @@ jobs:
     steps:
       - name: Run Docker
         run: |
-          docker run -d -v /r2s:/r2s --name r2s-build lingjiehao/build-envs:r2s 
+          docker run -d -v /r2s:/r2s -w /r2s --name r2s-build lingjiehao/build-envs:r2s 
       - name: Sync and Build
         run: |
-          docker exec r2s-build bash -c "\
-            cd /r2s && \
+          docker exec r2s-build " \
             repo init -u https://github.com/lingjiehao/manifests -b r2s && \
             repo sync --no-tags -cd -j8 && \            
-            ./build.sh 2>&1 | tee -a build.log "
+            ./build.sh "
   
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
