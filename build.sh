@@ -14,7 +14,7 @@ cp $R2S_DEFCONFIG_FILE $OPENWRT_ROOT/.config
 cd $OPENWRT_ROOT
 ./scripts/feeds update -a && ./scripts/feeds install -a
 
-# make defconfig
+make oldconfig
 
 make download -j4
 
