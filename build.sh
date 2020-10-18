@@ -18,4 +18,4 @@ make oldconfig
 
 make download -j4
 
-make -j$(($(nproc)+1)) V=s|| make -j1 V=s
+make -j$(($(nproc)+1)) || make -j1 V=s
