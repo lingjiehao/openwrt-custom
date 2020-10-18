@@ -36,7 +36,7 @@ jobs:
         with:
           name: Openwrt
           path: |
-            /r2s/bin/targets/rockchip/armv8/*-sysupgrade.img.gz
+            /r2s/openwrt-dev/bin/targets/rockchip/armv8/*-sysupgrade.img.gz
   
 #       - name: Upload Fail Log
 #         if: ${{ failure() }}
