@@ -1,0 +1,24 @@
+name: Docker Image CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: r2s
+      
+      - name: Build Docker Image
+        uses: azure/docker-login@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USR }}
+          password: ${{ secrets.DOCKERHUB_PASSWD }}
+      - run: |
+          cd dockerfile
+          docker build -t lingjiehao/build-envs:r2s .
+          docker push lingjiehao/build-envs:r2s
