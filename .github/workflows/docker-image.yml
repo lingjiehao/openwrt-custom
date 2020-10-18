@@ -20,5 +20,5 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWD }}
       - run: |
           cd dockerfile
-          docker build -t lingjiehao/build-envs:r2s .
-          docker push lingjiehao/build-envs:r2s
+          docker build -t ${{ secrets.DOCKERHUB_USR }}/build-envs:r2s .
+          docker push ${{ secrets.DOCKERHUB_USR }}/build-envs:r2s
