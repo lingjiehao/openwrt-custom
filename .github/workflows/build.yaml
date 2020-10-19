@@ -27,18 +27,41 @@ jobs:
           docker run -d -v /r2s:/r2s -w /r2s --name r2s-build lingjiehao/build-envs:r2s 
       - name: Sync and Build
         run: |
+          cd /r2s
           docker exec r2s-build /bin/bash -c " \
             repo init -u https://github.com/lingjiehao/manifests -b r2s && \
             repo sync --no-tags -cd -j8 && \            
             ./build.sh"
+          repo manifest -r -o static-manifest-`date +%Y-%m-%d-%H-%M`.xml
   
-      - name: Upload Artifact
+      - name: Upload ext4 Firmware
         uses: actions/upload-artifact@v2
         with:
-          name: Openwrt
+          path: /r2s/openwrt-dev/bin/targets/rockchip/armv8/*ext4-sysupgrade.img.gz
+
+      - name: Upload squashfs Firmware
+        uses: actions/upload-artifact@v2
+        with:
+          path: /r2s/openwrt-dev/bin/targets/rockchip/armv8/*squashfs-sysupgrade.img.gz
+       
+      - name: Upload buildinfo
+        uses: actions/upload-artifact@v2
+        with:
           path: |
-            /r2s/openwrt-dev/bin/targets/rockchip/armv8/*-sysupgrade.img.gz
+            /r2s/openwrt-dev/bin/targets/rockchip/armv8/*.buildinfo
+            /r2s/openwrt-dev/bin/targets/rockchip/armv8/sha256sums
+            /r2s/openwrt-dev/bin/targets/rockchip/armv8/*.manifest
+            /r2s/static-manifest-*.xml
   
+      - name: Upload packages
+        uses: actions/upload-artifact@v2
+        with:
+          name: packages
+          path: |
+            /r2s/openwrt-dev/bin/targets/rockchip/armv8/*.buildinfo
+            /r2s/openwrt-dev/bin/targets/rockchip/armv8/sha256sums
+            /r2s/openwrt-dev/bin/targets/rockchip/armv8/*.manifest
+            /r2s/static-manifest-*.xml      
 #       - name: Upload Fail Log
 #         if: ${{ failure() }}
 #         uses: actions/upload-artifact@v2
