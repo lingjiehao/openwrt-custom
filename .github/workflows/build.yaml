@@ -36,11 +36,13 @@ jobs:
       - name: Upload ext4 Firmware
         uses: actions/upload-artifact@v2
         with:
+          name: nanopi-ext4-sysupgrade
           path: /r2s/openwrt-dev/bin/targets/rockchip/armv8/*ext4-sysupgrade.img.gz
 
       - name: Upload squashfs Firmware
         uses: actions/upload-artifact@v2
         with:
+          name: nanopi-squashfs-sysupgrade
           path: /r2s/openwrt-dev/bin/targets/rockchip/armv8/*squashfs-sysupgrade.img.gz
        
       - name: Upload buildinfo
@@ -52,16 +54,7 @@ jobs:
             /r2s/openwrt-dev/bin/targets/rockchip/armv8/sha256sums
             /r2s/openwrt-dev/bin/targets/rockchip/armv8/*.manifest
             /r2s/static-manifest-*.xml
-  
-      - name: Upload packages
-        uses: actions/upload-artifact@v2
-        with:
-          name: packages
-          path: |
-            /r2s/openwrt-dev/bin/targets/rockchip/armv8/*.buildinfo
-            /r2s/openwrt-dev/bin/targets/rockchip/armv8/sha256sums
-            /r2s/openwrt-dev/bin/targets/rockchip/armv8/*.manifest
-            /r2s/static-manifest-*.xml      
+
 #       - name: Upload Fail Log
 #         if: ${{ failure() }}
 #         uses: actions/upload-artifact@v2
