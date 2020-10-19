@@ -30,7 +30,7 @@ jobs:
           docker exec r2s-build /bin/bash -c " \
             repo init -u https://github.com/lingjiehao/manifests -b r2s && \
             repo sync --no-tags -cd -j8 && \
-            repo manifest -r -o static-manifest-`date +%Y-%m-%d-%H-%M`.xml && \
+            repo manifest -r -o static-manifest-`date +%Y-%m-%d-%H-%M`.xml ; \
             ./build.sh"
 
       - name: Upload ext4 Firmware
