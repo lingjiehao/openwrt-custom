@@ -27,13 +27,12 @@ jobs:
           docker run -d -v /r2s:/r2s -w /r2s --name r2s-build lingjiehao/build-envs:r2s 
       - name: Sync and Build
         run: |
-          cd /r2s
           docker exec r2s-build /bin/bash -c " \
             repo init -u https://github.com/lingjiehao/manifests -b r2s && \
-            repo sync --no-tags -cd -j8 && \            
+            repo sync --no-tags -cd -j8 && \
+            repo manifest -r -o static-manifest-`date +%Y-%m-%d-%H-%M`.xml && \
             ./build.sh"
-          repo manifest -r -o static-manifest-`date +%Y-%m-%d-%H-%M`.xml
-  
+
       - name: Upload ext4 Firmware
         uses: actions/upload-artifact@v2
         with:
