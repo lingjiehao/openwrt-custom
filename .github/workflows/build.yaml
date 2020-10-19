@@ -7,8 +7,9 @@ on:
 #       - '.github/**'
 #     branches:
 #       - r2s
-  #schedule:
-  #  - cron: '0 19 * * 6'
+  schedule:
+#    - cron: '0 19 * * 6'
+    - cron: '0 3 * * *'
   watch:
     types: started
 
